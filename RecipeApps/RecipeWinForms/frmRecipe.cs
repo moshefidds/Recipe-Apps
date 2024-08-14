@@ -31,6 +31,7 @@ namespace RecipeWinForms
             txtRecipeStatus.DataBindings.Add("Text", dt, "RecipeStatus");
             txtRecipePictureFile.DataBindings.Add("Text", dt, "RecipePictureFile");
             this.Show();
+
         }
     }
 }
