@@ -1,4 +1,5 @@
 ﻿using CPUFramework;
+using CPUWindowsFormFramework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,22 +19,14 @@ namespace RecipeWinForms
             InitializeComponent();
             btnSearch.Click += BtnSearch_Click;
             gRecipe.CellDoubleClick += GRecipe_CellDoubleClick;
-            FormatGrid();
-        }
-
-        // FormatGrid
-        private void FormatGrid()
-        {
-            gRecipe.AllowUserToAddRows = false;
-            gRecipe.ReadOnly = false;
-            gRecipe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            gRecipe.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            btnNew.Click += BtnNew_Click;
+            WindowsFormUtility.FormatGridForSearch(gRecipe);
         }
 
         // SearchRecipe
         private void SearchRecipe(string recipe)
         {
-            string sql = "select r.RecipeId, r.RecipeName from Recipe r where r.RecipeName like '%" + recipe +"%'";
+            string sql = "select r.RecipeId, r.RecipeName from Recipe r where r.RecipeName like '%" + recipe + "%'";
             DataTable dt = SqlUtility.GetDataTable(sql);
             gRecipe.DataSource = dt;
             gRecipe.Columns["RecipeId"].Visible = false;
@@ -42,7 +35,11 @@ namespace RecipeWinForms
         // ShowRecipeForm
         private void ShowRecipeForm(int rowindex)
         {
-            int id = (int)gRecipe.Rows[rowindex].Cells["RecipeId"].Value;
+            int id = 0;
+            if (rowindex > -1)
+            {
+                id = (int)gRecipe.Rows[rowindex].Cells["RecipeId"].Value;
+            }
             frmRecipe frm = new();
             frm.ShowForm(id);
         }
@@ -55,6 +52,11 @@ namespace RecipeWinForms
         private void BtnSearch_Click(object? sender, EventArgs e)
         {
             SearchRecipe(txtRecipe.Text);
+        }
+
+        private void BtnNew_Click(object? sender, EventArgs e)
+        {
+            ShowRecipeForm(-1);
         }
     }
 }

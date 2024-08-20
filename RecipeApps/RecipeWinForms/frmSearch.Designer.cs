@@ -35,6 +35,7 @@
             txtRecipe = new TextBox();
             btnSearch = new Button();
             gRecipe = new DataGridView();
+            btnNew = new Button();
             tblMain.SuspendLayout();
             tblSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)gRecipe).BeginInit();
@@ -59,18 +60,20 @@
             // 
             // tblSearch
             // 
-            tblSearch.ColumnCount = 3;
+            tblSearch.ColumnCount = 4;
+            tblSearch.ColumnStyles.Add(new ColumnStyle());
             tblSearch.ColumnStyles.Add(new ColumnStyle());
             tblSearch.ColumnStyles.Add(new ColumnStyle());
             tblSearch.ColumnStyles.Add(new ColumnStyle());
             tblSearch.Controls.Add(lblCaptionRecipe, 0, 0);
             tblSearch.Controls.Add(txtRecipe, 1, 0);
+            tblSearch.Controls.Add(btnNew, 3, 0);
             tblSearch.Controls.Add(btnSearch, 2, 0);
             tblSearch.Location = new Point(3, 3);
             tblSearch.Name = "tblSearch";
             tblSearch.RowCount = 1;
             tblSearch.RowStyles.Add(new RowStyle());
-            tblSearch.Size = new Size(266, 50);
+            tblSearch.Size = new Size(345, 50);
             tblSearch.TabIndex = 0;
             // 
             // lblCaptionRecipe
@@ -114,6 +117,18 @@
             gRecipe.Size = new Size(525, 506);
             gRecipe.TabIndex = 1;
             // 
+            // btnNew
+            // 
+            btnNew.Anchor = AnchorStyles.Left;
+            btnNew.AutoSize = true;
+            btnNew.Location = new Point(257, 6);
+            btnNew.Margin = new Padding(5);
+            btnNew.Name = "btnNew";
+            btnNew.Size = new Size(75, 37);
+            btnNew.TabIndex = 3;
+            btnNew.Text = "New";
+            btnNew.UseVisualStyleBackColor = true;
+            // 
             // frmSearch
             // 
             AutoScaleDimensions = new SizeF(10F, 28F);
@@ -140,5 +155,6 @@
         private TextBox txtRecipe;
         private Button btnSearch;
         private DataGridView gRecipe;
+        private Button btnNew;
     }
 }
