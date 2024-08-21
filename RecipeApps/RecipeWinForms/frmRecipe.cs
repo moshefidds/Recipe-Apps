@@ -41,14 +41,48 @@ namespace RecipeWinForms
             this.Show();
         }
 
+        private void Save()
+        {
+            SqlUtility.DebugPrintDataTable(dtrecipe);
+            DataRow r = dtrecipe.Rows[0];
+            int id = (int)r["RecipeId"];
+            string sql = "";
+            if (id > 0)
+            {
+                sql = string.Join(Environment.NewLine, $"update Recipe set",
+                $"UserName = '{r["UserName"]}',",
+                $"CuisineType = '{r["CuisineType"]}',",
+                $"RecipeName = '{r["RecipeName"]}',",
+                $"NumOfCalories = {r["NumOfCalories"]},",
+                $"DateDrafted = '{r["DateDrafted"]}'",
+                $"where RecipeId = {r["RecipeId"]}");
+            }
+            else
+            {
+                sql = "insert Recipe(UserName, CuisineType, RecipeName, NumOfCalories, DateDrafted) ";
+                sql += $"select '{r["UserName"]}', '{r["CuisineType"]}', '{r["RecipeName"]}', {r["NumOfCalories"]}, '{r["DateDrafted"]}'";
+            }
+
+            SqlUtility.ExecuteSQL(sql);
+            this.Close();
+        }
+
+        private void Delete()
+        {
+            int id = (int)dtrecipe.Rows[0]["RecipeId"];
+            string sql = "delete Recipe where RecipeId = " + id;
+            SqlUtility.ExecuteSQL(sql);
+            this.Close();
+        }
+
         private void BtnDelete_Click(object? sender, EventArgs e)
         {
-
+            Delete();
         }
 
         private void BtnSave_Click(object? sender, EventArgs e)
         {
-
+            Save();
         }
     }
 }

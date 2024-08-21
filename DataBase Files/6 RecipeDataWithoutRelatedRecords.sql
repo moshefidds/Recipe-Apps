@@ -57,6 +57,5 @@ insert Recipe(UserName, CuisineType, RecipeName, NumOfCalories, DateDrafted, Dat
 select x.UserName, x.CuisineType, x.RecipeName, x.NumOfCalories, x.DateDrafted, x.DatePublished, x.DateArchived
 from x
 
-
 select *
 from Recipe

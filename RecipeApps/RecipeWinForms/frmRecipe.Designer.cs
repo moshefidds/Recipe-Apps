@@ -282,7 +282,6 @@
             lblDatePublished.Name = "lblDatePublished";
             lblDatePublished.Size = new Size(439, 21);
             lblDatePublished.TabIndex = 21;
-            lblDatePublished.Text = "label1";
             // 
             // lblDateArchived
             // 
@@ -293,7 +292,6 @@
             lblDateArchived.Name = "lblDateArchived";
             lblDateArchived.Size = new Size(439, 21);
             lblDateArchived.TabIndex = 22;
-            lblDateArchived.Text = "label2";
             // 
             // lblRecipeStatus
             // 
@@ -304,7 +302,6 @@
             lblRecipeStatus.Name = "lblRecipeStatus";
             lblRecipeStatus.Size = new Size(439, 21);
             lblRecipeStatus.TabIndex = 23;
-            lblRecipeStatus.Text = "label3";
             // 
             // frmRecipe
             // 
