@@ -24,20 +24,25 @@ namespace RecipeWinForms
 
         public void ShowForm(int recipeid)
         {
-            string sql = "select * from Recipe r where r.RecipeId = " + recipeid.ToString();
+            string sql = "select r.*, c.CuisineType, u.UserName from Recipe r join [User] u on r.UserId = u.UserId join Cuisine c on r.CuisineId = c.CuisineId where r.RecipeId = " + recipeid.ToString();
             dtrecipe = SqlUtility.GetDataTable(sql);
+
             if (recipeid == 0)
             {
                 dtrecipe.Rows.Add();
             }
-            WindowsFormUtility.SetControlBinding(txtUserName, dtrecipe); //lblUser.DataBindings.Add("Text", dtrecipe, "UserName");
-            WindowsFormUtility.SetControlBinding(txtCuisineType, dtrecipe); //lblCuisine.DataBindings.Add("Text", dtrecipe, "CuisineType");
-            WindowsFormUtility.SetControlBinding(txtRecipeName, dtrecipe); //txtRecipeName.DataBindings.Add("Text", dt, "RecipeName");
-            WindowsFormUtility.SetControlBinding(txtNumOfCalories, dtrecipe); //txtNumCalories.DataBindings.Add("Text", dt, "NumOfCalories");
-            WindowsFormUtility.SetControlBinding(txtDateDrafted, dtrecipe); //txtDateDrafted.DataBindings.Add("Text", dt, "DateDrafted");
-            WindowsFormUtility.SetControlBinding(lblDatePublished, dtrecipe); //txtDatePublished.DataBindings.Add("Text", dt, "DatePublished");
-            WindowsFormUtility.SetControlBinding(lblDateArchived, dtrecipe); //txtDateArchived.DataBindings.Add("Text", dt, "DateArchived");
-            WindowsFormUtility.SetControlBinding(lblRecipeStatus, dtrecipe); //txtRecipeStatus.DataBindings.Add("Text", dt, "RecipeStatus");
+            DataTable dtusers = SqlUtility.GetDataTable("select UserId, UserName from [User]");
+            WindowsFormUtility.SetListBinding(lstUserName, dtusers, dtrecipe, "User");
+
+            DataTable dtcuisine = SqlUtility.GetDataTable("select CuisineId, CuisineType from Cuisine");
+            WindowsFormUtility.SetListBinding(lstCuisineType, dtcuisine, dtrecipe, "Cuisine");
+
+            WindowsFormUtility.SetControlBinding(txtRecipeName, dtrecipe);
+            WindowsFormUtility.SetControlBinding(txtNumOfCalories, dtrecipe);
+            WindowsFormUtility.SetControlBinding(dtpDateDrafted, dtrecipe);
+            WindowsFormUtility.SetControlBinding(lblDatePublished, dtrecipe);
+            WindowsFormUtility.SetControlBinding(lblDateArchived, dtrecipe);
+            WindowsFormUtility.SetControlBinding(lblRecipeStatus, dtrecipe);
             this.Show();
         }
 
@@ -47,11 +52,12 @@ namespace RecipeWinForms
             DataRow r = dtrecipe.Rows[0];
             int id = (int)r["RecipeId"];
             string sql = "";
+
             if (id > 0)
             {
                 sql = string.Join(Environment.NewLine, $"update Recipe set",
-                $"UserName = '{r["UserName"]}',",
-                $"CuisineType = '{r["CuisineType"]}',",
+                $"UserId = '{r["UserId"]}',",
+                $"CuisineId = '{r["CuisineId"]}',",
                 $"RecipeName = '{r["RecipeName"]}',",
                 $"NumOfCalories = {r["NumOfCalories"]},",
                 $"DateDrafted = '{r["DateDrafted"]}'",
@@ -59,8 +65,8 @@ namespace RecipeWinForms
             }
             else
             {
-                sql = "insert Recipe(UserName, CuisineType, RecipeName, NumOfCalories, DateDrafted) ";
-                sql += $"select '{r["UserName"]}', '{r["CuisineType"]}', '{r["RecipeName"]}', {r["NumOfCalories"]}, '{r["DateDrafted"]}'";
+                sql = "insert Recipe(UserId, CuisineId, RecipeName, NumOfCalories, DateDrafted) ";
+                sql += $"select '{r["UserId"]}', '{r["CuisineId"]}', '{r["RecipeName"]}', {r["NumOfCalories"]}, '{r["DateDrafted"]}'";
             }
 
             SqlUtility.ExecuteSQL(sql);
