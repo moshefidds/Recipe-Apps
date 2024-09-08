@@ -16,12 +16,30 @@ drop table if exists Cuisine
 drop table if exists [User]
 go
 
+create table dbo.[User](
+    UserId int not null identity primary key,
+    UserFirstName varchar(50) not null 
+        constraint c_User_UserFirstName_cannot_be_blank check(UserFirstName <> ''), 
+    UserLastName varchar(50) not null
+        constraint c_User_UserLastName_cannot_be_blank check(UserLastName <> ''), 
+    UserName varchar(75) not null
+        constraint c_User_UserName_cannot_be_blank check(UserName <> '')
+        constraint u_User_UserName unique
+)
+go
+
+create table dbo.Cuisine(
+    CuisineId int not null identity primary key,
+    CuisineType varchar(50) not null
+        constraint c_Cuisine_CuisineType_cannot_be_blank check(CuisineType <> '')
+        constraint u_Cuisine_CuisineType unique
+)
+go
+
 create table dbo.Recipe(
     RecipeId int not null identity primary key,
-    UserName Varchar(100) not null
-        constraint c_Recipe_UserName_cannot_be_blank check(UserName <> ''),
-    CuisineType Varchar(100) not null
-        constraint c_Recipe_CuisineName_cannot_be_blank check(CuisineType <> ''),
+    UserId int not null constraint f_User_Recipe foreign key references [User](UserId),
+    CuisineId int not null constraint f_Cuisine_Recipe foreign key references Cuisine(CuisineId),
     RecipeName varchar(100) not null
         constraint c_Recipe_RecipeName_cannot_be_blank check(RecipeName <> '')
         constraint u_Recipe_RecipeName unique,
@@ -42,6 +60,25 @@ create table dbo.Recipe(
 )
 go
 
+insert [User](UserFirstName, UserLastName, UserName)
+select UserFirstName = 'Art', UserLastName = 'Smith', UserName = 'ASmith1234;-)'
+union select 'Bobby', 'Flay', 'BFlay4321((*))'
+union select 'Guy', 'Fieri', 'GuyFieri987654321.|.'
+union select 'Rachel', 'Voice', 'Voice.com'
+go
+
+
+insert Cuisine(CuisineType)
+select CuisineType = 'Chinese'
+union select 'Thai'
+union select 'Italian'
+union select 'American'
+union select 'Mediterranean'
+union select 'French'
+union select 'English'   
+go
+
+
 ;
 with x as(
    select UserName = 'ASmith1234;-)', CuisineType = 'American', RecipeName = 'Chocolate Chip Cookies', NumOfCalories = 230, DateDrafted = '2020-03-17 12:41:21.113' , DatePublished = '2023-03-17 12:41:21.113' , DateArchived = null 
@@ -53,9 +90,16 @@ with x as(
    union select 'Voice.com', 'Italian', '3D Italian Pizza', 1060, '2017-03-17 12:41:21.113', null, '2020-05-17 12:41:21.113'
    union select 'Voice.com', 'Mediterranean', 'Roasted Beef Taccos', 280, '2016-03-17 01:01:00.113', '2016-03-17 01:01:00.113', '2016-03-17 12:41:21.113'
 )
-insert Recipe(UserName, CuisineType, RecipeName, NumOfCalories, DateDrafted, DatePublished, DateArchived)
-select x.UserName, x.CuisineType, x.RecipeName, x.NumOfCalories, x.DateDrafted, x.DatePublished, x.DateArchived
-from x
+insert Recipe(UserId, CuisineId, RecipeName, NumOfCalories, DateDrafted, DatePublished, DateArchived)
+select u.UserId, c.CuisineId, x.RecipeName, x.NumOfCalories, x.DateDrafted, x.DatePublished, x.DateArchived
+from [User] u
+join x
+on u.UserName = x.UserName
+join Cuisine c
+on x.CuisineType = c.CuisineType
+go
+
+select CuisineId, CuisineType from Cuisine
 
 select *
 from Recipe
