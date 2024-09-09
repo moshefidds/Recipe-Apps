@@ -1,4 +1,5 @@
 using CPUFramework;
+using RecipeSystem;
 namespace RecipeWinForms
 {
     internal static class Program
@@ -12,7 +13,7 @@ namespace RecipeWinForms
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            SqlUtility.ConnectionString = "Server=tcp:mfiddle-cpu.database.windows.net,1433;Initial Catalog=RecipeDB;Persist Security Info=False;User ID=moshefiddle1234@gmail.com@mfiddle-cpu;Password=MoeFidds6074!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            DBManager.SetConnectionString("Server=tcp:mfiddle-cpu.database.windows.net,1433;Initial Catalog=RecipeDB;Persist Security Info=False;User ID=moshefiddle1234@gmail.com@mfiddle-cpu;Password=MoeFidds6074!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             Application.Run(new frmSearch());
         }
     }
