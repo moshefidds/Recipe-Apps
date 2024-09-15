@@ -24,7 +24,23 @@ namespace RecipeTest
 
             Assert.IsTrue(loadedrecipeid == recipeid, "RecipeId returned by App (" + loadedrecipeid + "( <> " + recipeid);
             TestContext.WriteLine("RecipeId returned by App = " + loadedrecipeid);
+        }
 
+        // TestRecipeSearchPerCriteria
+        [Test]
+        public void TestRecipeSearchPerCriteria()
+        {
+            string criteria = "c";
+            int num = SqlUtility.GetFirstColumnFirstRowValue("select total = Count(*) from Recipe where RecipeName like '%" + criteria + "%'");
+            Assume.That(num > 0, "No Recipes were found in DB that match the search criteria = " + criteria);
+            TestContext.WriteLine("Number of Recipes that match the search criteria of: " + criteria + " = " + num);
+            TestContext.WriteLine("Ensure that number of Recipes returned by App with search criteria of: " + criteria + " = " + num);
+
+            DataTable dt = Recipe.SearchRecipes(criteria);
+            int results = dt.Rows.Count;
+
+            Assert.IsTrue(results == num, "Num of Recipes returned by App (" + results + ") <> " + num);
+            TestContext.WriteLine("Number of Recipes returned by App with search criteria of: " + criteria + " = " + results);
         }
 
         // TestCuisineList
@@ -73,52 +89,6 @@ namespace RecipeTest
             Assert.IsTrue(dtafterdelete.Rows.Count == 0, "Deletion attempt failed. RecipeId = " + recipeid + " still in DB");
             TestContext.WriteLine("Successfuly deleted president with RecipeId = " + recipeid);
         }
-
-// MF - Below is one test for all columns. Prefer a seperate test for each.
-        
-        //// TestUpdateRecipe
-        //[TestCase("Fried Kishka", 99999, "1915-03-17 12:41:21")]
-        //public void TestUpdateRecipe(string changerecipename, int changenumofcalories, DateTime changedatedrafted)
-        //{
-        //    var (recipeid, recipedt) = GetExistingRecipeId();
-        //    Assume.That(recipeid > 0, "No Recipes found in DB. Test can't run");
-
-        //    // get current values
-        //    string recipename = (string)recipedt.Rows[0]["RecipeName"];
-        //    int numofcalories = (int)recipedt.Rows[0]["NumOfCalories"];
-        //    DateTime datedrafted = (DateTime)recipedt.Rows[0]["DateDrafted"];
-
-        //    // state initial
-        //    TestContext.WriteLine("Current RecipeId: " + recipeid + ", RecipeName is: " + recipename);
-        //    TestContext.WriteLine("Current RecipeId: " + recipeid + ", NumOf Calories is: " + numofcalories);
-        //    TestContext.WriteLine("Current RecipeId: " + recipeid + ", DaterDrafted is: " + datedrafted);
-
-        //    // populate DataTable with TestCase values.
-        //    changerecipename += " " + DateTime.Now.ToString();
-        //    recipedt.Rows[0]["RecipeName"] = changerecipename;
-        //    recipedt.Rows[0]["NumOfCalories"] = changenumofcalories;
-        //    recipedt.Rows[0]["DateDrafted"] = changedatedrafted;
-
-        //    // state changed
-        //    TestContext.WriteLine("Attempting to update Recipe with RecipeId: " + recipeid + ", RecipeName chnanging to: " + changerecipename);
-        //    TestContext.WriteLine("Attempting to update Recipe with RecipeId: " + recipeid + ", NumOf Calories chnanging to: " + changenumofcalories);
-        //    TestContext.WriteLine("Attempting to update Recipe with RecipeId: " + recipeid + ", DaterDrafted chnanging to: " + changedatedrafted);
-        //    Recipe.Save(recipedt);
-
-        //    //check from table and Assert
-        //    DataTable newrecipedt = Recipe.Load(recipeid);
-        //    string newrecipename = (string)newrecipedt.Rows[0]["RecipeName"];
-        //    int newnumofcalories = (int)newrecipedt.Rows[0]["NumOfCalories"];
-        //    DateTime newdatedrafted = (DateTime)newrecipedt.Rows[0]["DateDrafted"];
-
-        //    Assert.IsTrue(changerecipename == newrecipename , "Update attempt failed. RecipeName is still: " + recipename);
-        //    Assert.IsTrue(changenumofcalories == newnumofcalories , "Update attempt failed. NumOfCalories is still: " + numofcalories);
-        //    Assert.IsTrue(changedatedrafted == newdatedrafted , "Update attempt failed. DateDrafted is still: " + datedrafted);
-
-        //    TestContext.WriteLine("Successfuly updated Recipe with RecipeId: " + recipeid + ", RecipeName updated to: " + newrecipename);
-        //    TestContext.WriteLine("Successfuly updated Recipe with RecipeId: " + recipeid + ", NomOfCalories updated to: " + newnumofcalories);
-        //    TestContext.WriteLine("Successfuly updated Recipe with RecipeId: " + recipeid + ", DateDrafted updated to: " + newdatedrafted);
-        //}
 
         // TestUpdateRecipe_RecipeName
         [TestCase("Fried Kishka")]

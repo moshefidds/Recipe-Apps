@@ -1,9 +1,9 @@
 use RecipeDB
 go
 create or alter procedure dbo.RecipeGet(@RecipeId int = 0, @RecipeName varchar(100) = '', @All bit = 0)
-as 
+as
 begin
-    select @RecipeName = nullif(@RecipeName, '')
+    --select @RecipeName = nullif(@RecipeName, '')
     select r.RecipeId, r.UserId, r.CuisineId, r.RecipeName, r.NumOfCalories, r.DateDrafted, r.DatePublished, r.DateArchived, r.RecipeStatus
     from Recipe r
     where r.RecipeId = @RecipeId

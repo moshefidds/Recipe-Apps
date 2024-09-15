@@ -3,7 +3,7 @@ go
 create or alter procedure dbo.UserGet(@UserId int = 0, @UserName varchar(100) = '', @All bit = 0)
 as 
 begin
-    select @UserName = nullif(@UserName, '')
+    --select @UserName = nullif(@UserName, '')
     select *
     from [User] u
     where u.UserId = @UserId

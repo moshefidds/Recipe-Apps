@@ -3,7 +3,7 @@ go
 create or alter procedure dbo.CuisineGet(@CuisineId int = 0, @CuisineType varchar(100) = '', @All bit = 0)
 as 
 begin
-    select @CuisineType = nullif(@CuisineType, '')
+    --select @CuisineType = nullif(@CuisineType, '')
     select *
     from Cuisine c
     where c.CuisineId = @CuisineId

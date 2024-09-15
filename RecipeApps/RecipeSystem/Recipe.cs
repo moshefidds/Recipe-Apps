@@ -1,5 +1,7 @@
 ﻿
 using System.Data;
+using System.Data.SqlClient;
+
 namespace RecipeSystem
 {
     public class Recipe
@@ -7,29 +9,41 @@ namespace RecipeSystem
         // Search for Recipe
         public static DataTable SearchRecipes(string recipe)
         {
-            string sql = "select r.RecipeId, r.RecipeName from Recipe r where r.RecipeName like '%" + recipe + "%'";
-
-            DataTable dt = SqlUtility.GetDataTable(sql);
+            DataTable dt = new();
+            SqlCommand cmd = SqlUtility.GetSqlCommand("RecipeGet");
+            cmd.Parameters["@RecipeName"].Value = recipe;
+            dt = SqlUtility.GetDataTable(cmd);
             return dt;
         }
 
         // Load Recipe Data from DB
         public static DataTable Load(int recipeid)
         {
-            string sql = "select r.*, c.CuisineType, u.UserName from Recipe r join [User] u on r.UserId = u.UserId join Cuisine c on r.CuisineId = c.CuisineId where r.RecipeId = " + recipeid.ToString();
-            return SqlUtility.GetDataTable(sql);
+            DataTable dt = new();
+            SqlCommand cmd = SqlUtility.GetSqlCommand("RecipeGet");
+            cmd.Parameters["@RecipeId"].Value = recipeid;
+            dt = SqlUtility.GetDataTable(cmd);
+            return dt;
         }
 
         // Load User Data from DB
         public static DataTable GetUserList()
         {
-            return SqlUtility.GetDataTable("select UserId, UserName from [User]");
+            DataTable dt = new();
+            SqlCommand cmd = SqlUtility.GetSqlCommand("UserGet");
+            cmd.Parameters["@All"].Value = 1;
+            dt = SqlUtility.GetDataTable(cmd);
+            return dt;
         }
 
         // Load Cuisine data from DB
         public static DataTable GetCuisineList()
         {
-            return SqlUtility.GetDataTable("select CuisineId, CuisineType from Cuisine");
+            DataTable dt = new();
+            SqlCommand cmd = SqlUtility.GetSqlCommand("CuisineGet");
+            cmd.Parameters["@All"].Value = 1;
+            dt = SqlUtility.GetDataTable(cmd);
+            return dt;
         }
 
         // Save or Insert Data
