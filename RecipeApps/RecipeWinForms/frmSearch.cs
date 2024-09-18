@@ -14,7 +14,8 @@
         // SearchRecipe
         private void SearchRecipe(string recipe)
         {
-            DataTable dt = Recipe.SearchRecipes(recipe);
+            int all = recipe == "" ? 1 : 0;
+            DataTable dt = Recipe.SearchRecipes(recipe, all);
             gRecipe.DataSource = dt;
             gRecipe.Columns["RecipeId"].Visible = false;
         }

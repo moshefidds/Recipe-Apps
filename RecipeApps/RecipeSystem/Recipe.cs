@@ -7,11 +7,12 @@ namespace RecipeSystem
     public class Recipe
     {
         // Search for Recipe
-        public static DataTable SearchRecipes(string recipe)
+        public static DataTable SearchRecipes(string recipe, int all = 0)
         {
             DataTable dt = new();
             SqlCommand cmd = SqlUtility.GetSqlCommand("RecipeGet");
             cmd.Parameters["@RecipeName"].Value = recipe;
+            cmd.Parameters["@All"].Value = all;
             dt = SqlUtility.GetDataTable(cmd);
             return dt;
         }
