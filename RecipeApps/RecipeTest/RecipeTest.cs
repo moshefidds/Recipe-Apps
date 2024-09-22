@@ -248,7 +248,7 @@ namespace RecipeTest
             Assume.That(cuisineid > 0, "No Cuisines were found in DB. Test can't run");
             Assume.That(userid > 0, "No Users were found in DB. Test can't run");
 
-            string recipename = SqlUtility.GetExistingRecord("RecipeName");
+            string recipename = SqlUtility.GetExistingRecord("RecipeName", "Recipe");
 
             TestContext.WriteLine("Attempting to Insert new Recipe with RecipeName: " + recipename);
 
