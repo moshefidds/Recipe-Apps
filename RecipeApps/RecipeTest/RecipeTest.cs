@@ -73,12 +73,27 @@ namespace RecipeTest
             TestContext.WriteLine("Number of rows in Users returned by App = " + dt.Rows.Count);
         }
 
-        // TestDelete
+        // TestDeleteRecipe
         [Test]
         public void TestDeleteRecipe()
         {
-            var (recipeid, recipedt) = GetExistingRecipeId();
-            Assume.That(recipeid > 0, "No Recipes found in DB. Test can't run");
+            var (recipeid, recipedt) = GetExistingRecipeId(
+                "select * " +
+                "from Recipe r " +
+                "left join RecipeIngredient ri " +
+                "on r.RecipeId = ri.RecipeId " +
+                "left join RecipeDirections rd " +
+                "on r.RecipeId = rd.RecipeId " +
+                "left join MealCourseRecipe mcr " +
+                "on r.RecipeId = mcr.RecipeId " +
+                "left join CookBookRecipe cbr " +
+                "on r.RecipeId = cbr.RecipeId " +
+                "where ri.RecipeIngredientId is null " +
+                "and rd.RecipeDirectionsId is null " +
+                "and mcr.MealCourseRecipeId is null " +
+                "and cbr.CookBookRecipeId is null "
+                );
+            Assume.That(recipeid > 0, "No Recipes without related records found in DB. Test can't run");
 
             TestContext.WriteLine("Existing Recipe Info is - RecipeId: " + recipeid + ", RecipeName: " + recipedt.Rows[0]["RecipeName"]);
             TestContext.WriteLine("Ensure that App can delete Recipe with RecipeId = " + recipeid);
@@ -197,12 +212,115 @@ namespace RecipeTest
             TestContext.WriteLine("Successfuly inserted new Recipe with - pkId: " + newrecipeid + ", RecipeName: " + recipename);
         }
 
-        // Procedure - GetExistingRecipeId
-        private (int, DataTable) GetExistingRecipeId()
+        // TestInvalidDeleteRecipe_WithFk
+        [TestCase("RecipeIngredient ", "ri ")]
+        [TestCase("RecipeDirections ", "rd ")]
+        [TestCase("MealCourseRecipe ", "mcr ")]
+        [TestCase("CookBookRecipe ", "cbr ")]
+        public void TestInvalidDeleteRecipe_WithFk(string table, string alias)
         {
-            int recipeid = SqlUtility.GetFirstColumnFirstRowValue("select top 1 RecipeId from Recipe");
+            var (recipeid, recipedt) = GetExistingRecipeId(
+                "select top 1 * " +
+                "from Recipe r " +
+                "join " + table + alias +
+                "on r.RecipeId = " + alias + ".RecipeId"
+                );
+            Assume.That(recipeid > 0, "No Recipes with related records in " + table +  " found in DB. Test can't run");
+
+            TestContext.WriteLine("Existing Recipe Info is - RecipeId: " + recipeid + ", RecipeName: " + recipedt.Rows[0]["RecipeName"]);
+            TestContext.WriteLine("Ensure that App cannot delete Recipe with RecipeId = " + recipeid);
+
+            Exception ex = Assert.Throws<Exception>(() => Recipe.Delete(recipedt));
+            TestContext.WriteLine(ex.Message);
+        }
+
+        // TestInvalidInsertRecipe_Existing
+        [Test]
+        public void TestInvalidInsertRecipe_Existing()
+        {
+            DataTable dt = SqlUtility.GetDataTable("select * from recipe where recipeid = 0");
+            DataRow r = dt.Rows.Add();
+            Assume.That(dt.Rows.Count == 1);
+
+            int cuisineid = SqlUtility.GetFirstColumnFirstRowValue("select top 1 CuisineId from Cuisine");
+            int userid = SqlUtility.GetFirstColumnFirstRowValue("select top 1 UserId from [User]"); ;
+
+            Assume.That(cuisineid > 0, "No Cuisines were found in DB. Test can't run");
+            Assume.That(userid > 0, "No Users were found in DB. Test can't run");
+
+            string recipename = SqlUtility.GetExistingRecord("RecipeName");
+
+            TestContext.WriteLine("Attempting to Insert new Recipe with RecipeName: " + recipename);
+
+            r["UserId"] = userid;
+            r["CuisineId"] = cuisineid;
+            r["RecipeName"] = recipename;
+            r["NumOfCalories"] = 100;
+            r["DateDrafted"] = "2015-03-17 12:41:21.113";
+
+            Exception ex = Assert.Throws<Exception>(()=> Recipe.Save(dt));
+            TestContext.WriteLine(ex.Message);
+        }
+
+        // TestInvalidInsertRecipe_Blank
+        [TestCase("")]
+        public void TestInvalidInsertRecipe_Blank(string recipename)
+        {
+            DataTable dt = SqlUtility.GetDataTable("select * from recipe where recipeid = 0");
+            DataRow r = dt.Rows.Add();
+            Assume.That(dt.Rows.Count == 1);
+
+            int cuisineid = SqlUtility.GetFirstColumnFirstRowValue("select top 1 CuisineId from Cuisine");
+            int userid = SqlUtility.GetFirstColumnFirstRowValue("select top 1 UserId from [User]"); ;
+
+            Assume.That(cuisineid > 0, "No Cuisines were found in DB. Test can't run");
+            Assume.That(userid > 0, "No Users were found in DB. Test can't run");
+
+            TestContext.WriteLine("Attempting to Insert new Recipe with a blank RecipeName");
+
+            r["UserId"] = userid;
+            r["CuisineId"] = cuisineid;
+            r["RecipeName"] = recipename;
+            r["NumOfCalories"] = 100;
+            r["DateDrafted"] = "2015-03-17 12:41:21.113";
+
+            Exception ex = Assert.Throws<Exception>(() => Recipe.Save(dt));
+            TestContext.WriteLine(ex.Message);
+        }
+
+        // TestInvalidInsertNumOfCalories_NegativeOrZero
+        [TestCase(0)]
+        [TestCase(-5)]
+        public void TestInvalidInsertNumOfCalories_NegativeOrZero(int numofcalories)
+        {
+            DataTable dt = SqlUtility.GetDataTable("select * from recipe where recipeid = 0");
+            DataRow r = dt.Rows.Add();
+            Assume.That(dt.Rows.Count == 1);
+
+            int cuisineid = SqlUtility.GetFirstColumnFirstRowValue("select top 1 CuisineId from Cuisine");
+            int userid = SqlUtility.GetFirstColumnFirstRowValue("select top 1 UserId from [User]"); ;
+
+            Assume.That(cuisineid > 0, "No Cuisines were found in DB. Test can't run");
+            Assume.That(userid > 0, "No Users were found in DB. Test can't run");
+
+            TestContext.WriteLine("Attempting to Insert new Recipe with a NumOfCalories = " + numofcalories);
+
+            r["UserId"] = userid;
+            r["CuisineId"] = cuisineid;
+            r["RecipeName"] = "Mack & Cheese";
+            r["NumOfCalories"] = numofcalories;
+            r["DateDrafted"] = "2015-03-17 12:41:21.113";
+
+            Exception ex = Assert.Throws<Exception>(() => Recipe.Save(dt));
+            TestContext.WriteLine(ex.Message);
+        }
+
+        // Procedure - GetExistingRecipeId
+        private (int, DataTable) GetExistingRecipeId(String sql = "select top 1 RecipeId from Recipe")
+        {
+            int recipeid = SqlUtility.GetFirstColumnFirstRowValue(sql);
             DataTable recipedt = Recipe.Load(recipeid);
             return (recipeid, recipedt);
-        }
+        } 
     }
 }

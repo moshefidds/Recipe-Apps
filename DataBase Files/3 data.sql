@@ -48,6 +48,11 @@ with x as(
    union select 'Voice.com', 'Italian', 'Rustic Italian Pizza Wraps', 90, '2024-03-17 01:41:21.113', '2024-03-17 03:25:21.113', null
    union select 'Voice.com', 'Italian', '3D Italian Pizza', 1060, '2017-03-17 12:41:21.113', null, '2020-05-17 12:41:21.113'
    union select 'Voice.com', 'Mediterranean', 'Roasted Beef Taccos', 280, '2016-03-17 01:01:00.113', '2016-03-17 01:01:00.113', '2016-03-17 12:41:21.113'
+
+   union select 'Voice.com', 'Mediterranean', 'No Related Records # 1', 280, '2016-03-17 01:01:00.113', '2016-03-17 01:01:00.113', '2016-03-17 12:41:21.113'
+   union select 'Voice.com', 'Mediterranean', 'No Related Records # 2', 280, '2016-03-17 01:01:00.113', '2016-03-17 01:01:00.113', '2016-03-17 12:41:21.113'
+   union select 'Voice.com', 'Mediterranean', 'No Related Records # 3', 280, '2016-03-17 01:01:00.113', '2016-03-17 01:01:00.113', '2016-03-17 12:41:21.113'
+   union select 'Voice.com', 'Mediterranean', 'No Related Records # 4', 280, '2016-03-17 01:01:00.113', '2016-03-17 01:01:00.113', '2016-03-17 12:41:21.113'
 )
 insert Recipe(UserId, CuisineId, RecipeName, NumOfCalories, DateDrafted, DatePublished, DateArchived)
 select u.UserId, c.CuisineId, x.RecipeName, x.NumOfCalories, x.DateDrafted, x.DatePublished, x.DateArchived

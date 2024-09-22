@@ -50,7 +50,7 @@ namespace RecipeSystem
         // Save or Insert Data
         public static void Save(DataTable dtrecipe)
         {
-            SqlUtility.DebugPrintDataTable(dtrecipe);
+            //SqlUtility.DebugPrintDataTable(dtrecipe);
             DataRow r = dtrecipe.Rows[0];
             int id = (int)r["RecipeId"];
             string sql = "";
