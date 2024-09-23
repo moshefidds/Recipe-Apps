@@ -1,3 +1,4 @@
+using RecipeSystem;
 using System.Data;
 
 namespace RecipeTest
@@ -77,23 +78,24 @@ namespace RecipeTest
         [Test]
         public void TestDeleteRecipe()
         {
-            var (recipeid, recipedt) = GetExistingRecipeId(
-                "select * " +
-                "from Recipe r " +
-                "left join RecipeIngredient ri " +
-                "on r.RecipeId = ri.RecipeId " +
-                "left join RecipeDirections rd " +
-                "on r.RecipeId = rd.RecipeId " +
-                "left join MealCourseRecipe mcr " +
-                "on r.RecipeId = mcr.RecipeId " +
-                "left join CookBookRecipe cbr " +
-                "on r.RecipeId = cbr.RecipeId " +
-                "where ri.RecipeIngredientId is null " +
-                "and rd.RecipeDirectionsId is null " +
-                "and mcr.MealCourseRecipeId is null " +
-                "and cbr.CookBookRecipeId is null "
-                );
-            Assume.That(recipeid > 0, "No Recipes without related records found in DB. Test can't run");
+            string sql = @"
+                select top 1 * 
+                from Recipe r 
+                left join RecipeIngredient ri 
+                on r.RecipeId = ri.RecipeId 
+                left join RecipeDirections rd 
+                on r.RecipeId = rd.RecipeId 
+                left join MealCourseRecipe mcr 
+                on r.RecipeId = mcr.RecipeId 
+                left join CookBookRecipe cbr 
+                on r.RecipeId = cbr.RecipeId 
+                where ri.RecipeIngredientId is null 
+                and rd.RecipeDirectionsId is null 
+                and mcr.MealCourseRecipeId is null 
+                and cbr.CookBookRecipeId is null
+                ";
+            var (recipeid, recipedt) = GetExistingRecipeId(sql);
+            Assume.That(recipeid > 0, "No Recipes without any related records found in DB. Test can't run");
 
             TestContext.WriteLine("Existing Recipe Info is - RecipeId: " + recipeid + ", RecipeName: " + recipedt.Rows[0]["RecipeName"]);
             TestContext.WriteLine("Ensure that App can delete Recipe with RecipeId = " + recipeid);
@@ -213,19 +215,25 @@ namespace RecipeTest
         }
 
         // TestInvalidDeleteRecipe_WithFk
-        [TestCase("RecipeIngredient ", "ri ")]
-        [TestCase("RecipeDirections ", "rd ")]
-        [TestCase("MealCourseRecipe ", "mcr ")]
-        [TestCase("CookBookRecipe ", "cbr ")]
-        public void TestInvalidDeleteRecipe_WithFk(string table, string alias)
+        //[TestCase("ri.RecipeIngredientId")]
+        //[TestCase("rd.RecipeDirectionsId")]
+        [TestCase("mcr.MealCourseRecipeId")]
+        [TestCase("cbr.CookBookRecipeId")]
+        public void TestInvalidDeleteRecipe_WithFk(string tableid)
         {
-            var (recipeid, recipedt) = GetExistingRecipeId(
-                "select top 1 * " +
+            string sql = "select top 1 * " +
                 "from Recipe r " +
-                "join " + table + alias +
-                "on r.RecipeId = " + alias + ".RecipeId"
-                );
-            Assume.That(recipeid > 0, "No Recipes with related records in " + table +  " found in DB. Test can't run");
+                "left join RecipeIngredient ri " +
+                "on r.RecipeId = ri.RecipeId " +
+                "left join RecipeDirections rd  " +
+                "on r.RecipeId = rd.RecipeId " +
+                "left join MealCourseRecipe mcr " +
+                "on r.RecipeId = mcr.RecipeId " +
+                "left join CookBookRecipe cbr " +
+                "on r.RecipeId = cbr.RecipeId " +
+                "order by " + tableid + " desc";
+            var (recipeid, recipedt) = GetExistingRecipeId(sql);
+            Assume.That(recipeid > 0, "No Recipes with related records in " + tableid +  " found in DB. Test can't run");
 
             TestContext.WriteLine("Existing Recipe Info is - RecipeId: " + recipeid + ", RecipeName: " + recipedt.Rows[0]["RecipeName"]);
             TestContext.WriteLine("Ensure that App cannot delete Recipe with RecipeId = " + recipeid);

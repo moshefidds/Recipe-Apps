@@ -54,6 +54,11 @@ namespace RecipeWinForms
 
         private void Delete()
         {
+            var response = MessageBox.Show("You're sure you want to Delete?", "Record Keeper", MessageBoxButtons.YesNo);
+            if (response == DialogResult.No)
+            {
+                return;
+            }
             Application.UseWaitCursor = true;
             try
             {
