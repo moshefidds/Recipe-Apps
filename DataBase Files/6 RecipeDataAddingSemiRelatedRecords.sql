@@ -22,6 +22,13 @@ with x as(
    union select 'Voice.com', 'Mediterranean', 'Only Related to MealCourseRecipe', 280, '2016-03-17 01:01:00.113', '2016-03-17 01:01:00.113', '2016-03-17 12:41:21.113' 
 
     union select 'Voice.com', 'Mediterranean', 'Only Related to CookBookRecipe', 280, '2016-03-17 01:01:00.113', '2016-03-17 01:01:00.113', '2016-03-17 12:41:21.113' 
+
+    union select 'Voice.com', 'Mediterranean', 'Archived Less then 30 days from today ;-)', 280, '2016-03-17 01:01:00.113', '2016-03-17 01:01:00.113', '2024-09-25 12:41:21.113' 
+
+    union select 'Voice.com', 'Mediterranean', 'Archived More then 30 days from today ;-)', 280, '2016-03-17 01:01:00.113', '2016-03-17 01:01:00.113', '2024-08-25 12:41:21.113' 
+
+    union select 'Voice.com', 'Mediterranean', 'Still In Drafted', 280, '2016-03-17 01:01:00.113', null, null 
+
 )
 insert Recipe(UserId, CuisineId, RecipeName, NumOfCalories, DateDrafted, DatePublished, DateArchived)
 select u.UserId, c.CuisineId, x.RecipeName, x.NumOfCalories, x.DateDrafted, x.DatePublished, x.DateArchived
