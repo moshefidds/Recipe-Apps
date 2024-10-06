@@ -5,15 +5,23 @@ create or alter procedure RecipeDelete(
 as
 begin
     declare @return int = 0
-    if exists(select * from Recipe r where r.RecipeId = @RecipeId and r.RecipeStatus = 'Archived' and datediff(day, r.DateArchived, GetDate()) <= 30)
+    if exists(
+        select * 
+        from Recipe r 
+        where r.RecipeId = @RecipeId 
+        and 
+        (
+            r.RecipeStatus = 'Published'
+            or 
+            (
+                r.RecipeStatus = 'Archived' 
+                and 
+                datediff(day, r.DateArchived, GetDate()) <= 30
+            )
+        )
+    )
     begin
-        select @return = 1, @Message = 'Cannot delete a Recipe when in ''Archived'' for less then 30 days.'
-        goto finished
-    end
-
-    if exists(select * from Recipe r where r.RecipeId = @RecipeId and r.RecipeStatus = 'Published')
-    begin
-        select @return = 1, @Message = 'Cannot delete a Recipe when in ''Published''.'
+        select @return = 1, @Message = 'Cannot delete a Recipe when in ''Published'' or ''Archived'' for less then 30 days.'
         goto finished
     end
 
