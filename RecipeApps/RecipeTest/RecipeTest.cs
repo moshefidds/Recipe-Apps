@@ -243,44 +243,30 @@ namespace RecipeTest
             TestContext.WriteLine(ex.Message);
         }
 
-        // TestInvalidDeleteRecipe_BuisnessRule_NotInDrafted
+        // TestInvalidDeleteRecipe_BusinessRule_Published_Or_Drafted_Less_Than_30_Days
         [Test]
-        public void TestInvalidDeleteRecipe_BuisnessRule_NotInDrafted()
+        public void TestInvalidDeleteRecipe_BusinessRule_Published_Or_Drafted_Less_Than_30_Days()
         {
             string sql = @"
             select * 
             from Recipe r 
             where r.RecipeStatus = 'Published'
+            or 
+            (
+                r.RecipeStatus = 'Archived' 
+                and 
+                datediff(day, r.DateArchived, GetDate()) <= 30
+            )
             ";
             var (recipeid, recipedt) = GetExistingRecipeId(sql);
-            Assume.That(recipeid > 0, "No Recipes in 'Published' found in DB. Test can't run");
+            Assume.That(recipeid > 0, "No Recipes in 'Published' or in 'Drafted' for less than 30 days found in DB. Test can't run");
 
-            TestContext.WriteLine("Existing Recipe in 'Published' Info is - RecipeId: " + recipeid + ", RecipeName: " + recipedt.Rows[0]["RecipeName"]);
-            TestContext.WriteLine("Ensure that App cannot delete Recipe in 'Published' with RecipeId = " + recipeid);
+            TestContext.WriteLine("Existing Recipe in 'Published' or in 'Drafted' for less than 30 days Info is - RecipeId: " + recipeid + ", RecipeName: " + recipedt.Rows[0]["RecipeName"]);
+            TestContext.WriteLine("Ensure that App cannot delete Recipe in 'Published' or in 'Drafted' for less than 30 days with RecipeId = " + recipeid);
 
             Exception ex = Assert.Throws<Exception>(() => Recipe.Delete(recipedt));
             TestContext.WriteLine(ex.Message);
         }
-
-        // TestInvalidDeleteRecipe_BuisnessRule_ArchivedLessThen30Days
-        [Test]
-        public void TestInvalidDeleteRecipe_BuisnessRule_ArchivedLessThen30Days()
-        {
-            string sql = @"
-            select * 
-            from Recipe r 
-            where datediff(day, r.DateArchived, GetDate()) <= 30
-            ";
-            var (recipeid, recipedt) = GetExistingRecipeId(sql);
-            Assume.That(recipeid > 0, "No Recipes in 'Archived' for less then 30 days found in DB. Test can't run");
-
-            TestContext.WriteLine("Existing Recipe in 'Archived' for less then 30 days with RecipeId: " + recipeid + ", RecipeName: " + recipedt.Rows[0]["RecipeName"]);
-            TestContext.WriteLine("Ensure that App cannot delete Recipe in 'Archived' for less then 30 days with RecipeId = " + recipeid);
-
-            Exception ex = Assert.Throws<Exception>(() => Recipe.Delete(recipedt));
-            TestContext.WriteLine(ex.Message);
-        }
-
 
         // TestInvalidInsertRecipe_Existing
         [Test]
