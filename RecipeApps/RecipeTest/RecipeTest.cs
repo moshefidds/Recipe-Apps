@@ -167,7 +167,7 @@ namespace RecipeTest
             Assume.That(recipeid > 0, "No Recipes found in DB. Test can't run");
             // get current values
             DateTime datedrafted = (DateTime)recipedt.Rows[0]["DateDrafted"];
-            TestContext.WriteLine("Current RecipeId: " + recipeid + ", DaterDrafted is: " + datedrafted);
+            TestContext.WriteLine("Current RecipeId: " + recipeid + ", DateDrafted is: " + datedrafted);
 
             // populate DataTable with TestCase values.
             recipedt.Rows[0]["DateDrafted"] = changedatedrafted;

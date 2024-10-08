@@ -50,28 +50,13 @@ namespace RecipeSystem
         // Save or Insert Data
         public static void Save(DataTable dtrecipe)
         {
-            //SqlUtility.DebugPrintDataTable(dtrecipe);
+            if (dtrecipe.Rows.Count == 0)
+            {
+                throw new Exception("No Recipes in table to call 'RecipeUpdate'");
+            }
             DataRow r = dtrecipe.Rows[0];
-            int id = (int)r["RecipeId"];
-            string sql = "";
 
-            if (id > 0)
-            {
-                sql = string.Join(Environment.NewLine, $"update Recipe set",
-                $"UserId = '{r["UserId"]}',",
-                $"CuisineId = '{r["CuisineId"]}',",
-                $"RecipeName = '{r["RecipeName"]}',",
-                $"NumOfCalories = {r["NumOfCalories"]},",
-                $"DateDrafted = '{r["DateDrafted"]}'",
-                $"where RecipeId = {r["RecipeId"]}");
-            }
-            else
-            {
-                sql = "insert Recipe(UserId, CuisineId, RecipeName, NumOfCalories, DateDrafted) ";
-                sql += $"select '{r["UserId"]}', '{r["CuisineId"]}', '{r["RecipeName"]}', {r["NumOfCalories"]}, '{r["DateDrafted"]}'";
-            }
-
-            SqlUtility.ExecuteSQL(sql);
+            SqlUtility.SaveDataRow(r, "RecipeUpdate");
         }
 
         // Delete Data
