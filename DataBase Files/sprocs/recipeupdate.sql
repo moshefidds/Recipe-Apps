@@ -4,7 +4,7 @@ create or alter proc dbo.RecipeUpdate(
     @CuisineId int,
     @RecipeName varchar (100),
     @NumOfCalories int,
-    @DateDrafted datetime,
+    @DateDrafted datetime output,
     @DatePublished datetime,
     @DateArchived datetime,
     @Message varchar(500) = '' output
@@ -13,10 +13,14 @@ as
 begin
     declare @return int = 0
 
-    select @RecipeId = isnull(@RecipeId, 0)
+    select @RecipeId = isnull(@RecipeId, 0), @DateDrafted = nullif(@DateDrafted, 0)
 
     if @RecipeId = 0
     begin
+        if @DateDrafted is null
+            begin
+                select @DateDrafted = getdate()
+            end
         insert Recipe(UserId, CuisineId, RecipeName, NumOfCalories, DateDrafted, DatePublished, DateArchived)
         values(@UserId, @CuisineId, @RecipeName, @NumOfCalories, @DateDrafted, @DatePublished, @DateArchived)
         select @RecipeId = SCOPE_IDENTITY()

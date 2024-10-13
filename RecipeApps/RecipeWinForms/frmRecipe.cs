@@ -23,12 +23,12 @@ namespace RecipeWinForms
             DataTable dtusers = Recipe.GetUserList();
             WindowsFormUtility.SetListBinding(lstUserName, dtusers, dtrecipe, "User");
 
-            DataTable dtcuisine = Recipe.GetCuisineList(); 
+            DataTable dtcuisine = Recipe.GetCuisineList();
             WindowsFormUtility.SetListBinding(lstCuisineType, dtcuisine, dtrecipe, "Cuisine");
 
             WindowsFormUtility.SetControlBinding(txtRecipeName, bindsource);
             WindowsFormUtility.SetControlBinding(txtNumOfCalories, bindsource);
-            WindowsFormUtility.SetControlBinding(dtpDateDrafted, bindsource);
+            WindowsFormUtility.SetControlBinding(lblDateDrafted, bindsource);
             WindowsFormUtility.SetControlBinding(lblDatePublished, bindsource);
             WindowsFormUtility.SetControlBinding(lblDateArchived, bindsource);
             WindowsFormUtility.SetControlBinding(lblRecipeStatus, bindsource);
@@ -41,9 +41,9 @@ namespace RecipeWinForms
             try
             {
                 Recipe.Save(dtrecipe);
-                this.Close();
+                bindsource.ResetBindings(false);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Recipe");
             }
