@@ -4,15 +4,12 @@ as
 begin
     declare @value int = 0
         select @value = sum(r.NumOfCalories)
-        from Meal m
-        join MealCourse mc
-        on m.MealId = mc.MealId
+        from MealCourse mc
         join MealCourseRecipe mcr
         on mc.MealCourseId = mcr.MealCourseId
         join Recipe r
         on mcr.RecipeId = r.RecipeId
-        where m.MealId = @MealId
-        group by m.MealName
+        where mc.MealId = @MealId
     return @value
 end 
 go

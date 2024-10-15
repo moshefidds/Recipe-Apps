@@ -5,10 +5,9 @@ begin
     declare @value varchar(200) = ''
     select @value = concat(
         r.RecipeName,
-        case
-            when c.CuisineId is not null then concat(' (', c.CuisineType, ') ')
-            else ''
-        end,
+        ' (', 
+        c.CuisineType,
+        ') ',
         'has ',
         count(distinct ri.RecipeIngredientId),
         ' ingredients and ',
@@ -16,14 +15,14 @@ begin
         ' steps.'
     )
     from Recipe r
-    left join Cuisine c
+    join Cuisine c
     on r.CuisineId = c.CuisineId
     left join RecipeIngredient ri
     on r.RecipeId = ri.RecipeId
     left join RecipeDirections rd
     on r.RecipeId = rd.RecipeId
     where r.RecipeId = @RecipeId
-    group by r.RecipeName, c.CuisineId, c.CuisineType
+    group by r.RecipeName, c.CuisineType
     return @value
 end
 go
