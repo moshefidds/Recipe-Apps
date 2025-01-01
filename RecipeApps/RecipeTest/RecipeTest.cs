@@ -54,7 +54,7 @@ namespace RecipeTest
             TestContext.WriteLine("Number of Cuisines = " + cuisinecount);
             TestContext.WriteLine("Ensure that number of Rows returned by App = " + cuisinecount);
 
-            DataTable dt = Recipe.GetCuisineList();
+            DataTable dt = RecipeGeneralSystem.GetCuisineList();
             Assert.IsTrue(dt.Rows.Count == cuisinecount, "Num Rows returned by App (" + dt.Rows.Count + ") <> " + cuisinecount);
             TestContext.WriteLine("Number of rows in Cuisine returned by App = " + dt.Rows.Count);
         }
@@ -69,7 +69,7 @@ namespace RecipeTest
             TestContext.WriteLine("Number of Users = " + usercount);
             TestContext.WriteLine("Ensure that number of Rows returned by App = " + usercount);
 
-            DataTable dt = Recipe.GetUserList();
+            DataTable dt = RecipeGeneralSystem.GetUserList();
             Assert.IsTrue(dt.Rows.Count == usercount, "Num Rows returned by App (" + dt.Rows.Count + ") <> " + usercount);
             TestContext.WriteLine("Number of rows in Users returned by App = " + dt.Rows.Count);
         }
@@ -128,7 +128,7 @@ namespace RecipeTest
             Recipe.Save(recipedt);
 
             //check from table and Assert
-            DataTable newrecipedt = Recipe.Load(recipeid);
+            DataTable newrecipedt = Recipe.LoadRecipe(recipeid);
             string newrecipename = (string)newrecipedt.Rows[0]["RecipeName"];
             Assert.IsTrue(changerecipename == newrecipename, "Update attempt failed. RecipeName is still: " + recipename);
             TestContext.WriteLine("Successfuly updated Recipe with RecipeId: " + recipeid + ", RecipeName updated to: " + newrecipename);
@@ -153,7 +153,7 @@ namespace RecipeTest
             Recipe.Save(recipedt);
 
             //check from table and Assert
-            DataTable newrecipedt = Recipe.Load(recipeid);
+            DataTable newrecipedt = Recipe.LoadRecipe(recipeid);
             int newnumofcalories = (int)newrecipedt.Rows[0]["NumOfCalories"];
             Assert.IsTrue(changenumofcalories == newnumofcalories, "Update attempt failed. NumOfCalories is still: " + numofcalories);
             TestContext.WriteLine("Successfuly updated Recipe with RecipeId: " + recipeid + ", NomOfCalories updated to: " + newnumofcalories);
@@ -177,7 +177,7 @@ namespace RecipeTest
             Recipe.Save(recipedt);
 
             //check from table and Assert
-            DataTable newrecipedt = Recipe.Load(recipeid);
+            DataTable newrecipedt = Recipe.LoadRecipe(recipeid);
             DateTime newdatedrafted = (DateTime)newrecipedt.Rows[0]["DateDrafted"];
             Assert.IsTrue(changedatedrafted == newdatedrafted, "Update attempt failed. DateDrafted is still: " + datedrafted);
             TestContext.WriteLine("Successfuly updated Recipe with RecipeId: " + recipeid + ", DateDrafted updated to: " + newdatedrafted);
@@ -353,7 +353,7 @@ namespace RecipeTest
         private (int, DataTable) GetExistingRecipeId(String sql = "select top 1 RecipeId from Recipe")
         {
             int recipeid = SqlUtility.GetFirstColumnFirstRowValue(sql);
-            DataTable recipedt = Recipe.Load(recipeid);
+            DataTable recipedt = Recipe.LoadRecipe(recipeid);
             return (recipeid, recipedt);
         } 
     }

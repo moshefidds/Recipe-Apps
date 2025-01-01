@@ -8,7 +8,7 @@
             btnSearch.Click += BtnSearch_Click;
             gRecipe.CellDoubleClick += GRecipe_CellDoubleClick;
             btnNew.Click += BtnNew_Click;
-            WindowsFormUtility.FormatGridForSearch(gRecipe);
+            WindowsFormUtility.FormatGridForSearch(gRecipe, "Recipe");
         }
 
         // SearchRecipe
@@ -29,7 +29,7 @@
                 id = (int)gRecipe.Rows[rowindex].Cells["RecipeId"].Value;
             }
             frmRecipe frm = new();
-            frm.ShowForm(id);
+            frm.LoadForm(id);
         }
 
         private void GRecipe_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)

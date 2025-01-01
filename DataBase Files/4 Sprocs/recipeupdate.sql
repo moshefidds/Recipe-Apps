@@ -1,12 +1,12 @@
 create or alter proc dbo.RecipeUpdate(
-    @RecipeId int  output,
+    @RecipeId int output,
     @UserId int,
     @CuisineId int,
     @RecipeName varchar (100),
     @NumOfCalories int,
     @DateDrafted datetime output,
-    @DatePublished datetime,
-    @DateArchived datetime,
+    @DatePublished datetime output,
+    @DateArchived datetime output,
     @Message varchar(500) = '' output
 )
 as 
