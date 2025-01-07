@@ -15,11 +15,11 @@ begin
 end
 go
 
-exec CuisineGet
+--exec CuisineGet
 
-exec CuisineGet @All = 1
+--exec CuisineGet @All = 1
 
-exec CuisineGet @All = 1, @IncludeBlank = 1
+--exec CuisineGet @All = 1, @IncludeBlank = 1
 
 --exec CuisineGet @CuisineType = ''
 

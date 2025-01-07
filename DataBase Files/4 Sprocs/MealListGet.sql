@@ -38,5 +38,5 @@ begin
 end
 go
 
-exec MealListGet
+--exec MealListGet
 

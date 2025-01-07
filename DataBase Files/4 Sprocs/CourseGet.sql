@@ -22,8 +22,8 @@ begin
 end
 go
 
-exec CourseGet
+--exec CourseGet
 
-exec CourseGet @All = 1
+--exec CourseGet @All = 1
 
 

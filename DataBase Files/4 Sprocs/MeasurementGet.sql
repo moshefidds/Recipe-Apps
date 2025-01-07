@@ -15,6 +15,6 @@ begin
 end
 go
 
-exec MeasurementGet
+--exec MeasurementGet
 
-exec MeasurementGet @All = 1, @IncludeBlank = 1
+--exec MeasurementGet @All = 1, @IncludeBlank = 1

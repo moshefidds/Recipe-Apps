@@ -39,4 +39,4 @@ begin
 end 
 go
 
-exec MealGet
+--exec MealGet

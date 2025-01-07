@@ -20,9 +20,9 @@ begin
 end
 go
 
-exec UserGet
+--exec UserGet
 
-exec UserGet @All = 1, @IncludeBlank = 1
+--exec UserGet @All = 1, @IncludeBlank = 1
 
 --exec UserGet @UserName = ''
 
