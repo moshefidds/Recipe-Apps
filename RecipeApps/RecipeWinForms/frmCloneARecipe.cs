@@ -20,13 +20,27 @@
         }
 
         // CloneARecipe
-        private void CloneARecipe()
+        private bool CloneARecipe()
         {
-            int recipeid = WindowsFormUtility.GetIdFromCombobox(lstRecipe);
-            RecipeGeneralSystem.CloneARecipe(recipeid);
-
-            string newrecipe = recipename + " - clone";
-            OpenNewRecipe(newrecipe);
+            bool b = false;
+            Application.UseWaitCursor = true;
+            try
+            {
+                int recipeid = WindowsFormUtility.GetIdFromCombobox(lstRecipe);
+                RecipeGeneralSystem.CloneARecipe(recipeid);
+                b = true;
+                string newrecipe = recipename + " - clone";
+                OpenNewRecipe(newrecipe);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Recipe");
+            }
+            finally
+            {
+                Application.UseWaitCursor = false;
+            }
+            return b;
         }
 
         // OpenNewRecipe

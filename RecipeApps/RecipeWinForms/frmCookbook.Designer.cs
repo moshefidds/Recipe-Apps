@@ -210,8 +210,6 @@
             // 
             // ckbCookBookActive
             // 
-            ckbCookBookActive.Checked = true;
-            ckbCookBookActive.CheckState = CheckState.Checked;
             ckbCookBookActive.Dock = DockStyle.Fill;
             ckbCookBookActive.Font = new Font("Segoe UI", 20.25F, FontStyle.Regular, GraphicsUnit.Point);
             ckbCookBookActive.Location = new Point(279, 272);

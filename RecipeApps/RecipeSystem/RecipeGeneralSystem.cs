@@ -15,11 +15,12 @@ namespace RecipeSystem
         }
 
         // Load User Data from DB
-        public static DataTable GetUserList(bool includeblank = false)
+        public static DataTable GetUserList(bool includeblank = false, string username = "")
         {
             DataTable dt = new();
             SqlCommand cmd = SqlUtility.GetSqlCommand("UserGet");
             SqlUtility.SetParamValue(cmd, "@All", 1);
+            SqlUtility.SetParamValue(cmd, "@UserName", username);
             SqlUtility.SetParamValue(cmd, "@IncludeBlank", includeblank);
             dt = SqlUtility.GetDataTable(cmd);
             return dt;

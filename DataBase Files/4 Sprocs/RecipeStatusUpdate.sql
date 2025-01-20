@@ -9,15 +9,15 @@ as
 begin
     declare @return int = 0
 
-    select @RecipeId = isnull(@RecipeId, 0)
+    select @RecipeId = isnull(@RecipeId, 0), @DateArchived = nullif(@DateArchived, ''), @DatePublished = nullif(@DatePublished, '')
 
     if @RecipeId != 0
     begin
         update Recipe 
         set 
-            DateDrafted = @DateDrafted, 
+            DateArchived = @DateArchived,
             DatePublished = @DatePublished, 
-            DateArchived = @DateArchived
+            DateDrafted = @DateDrafted          
         where RecipeId = @RecipeId
     end
 

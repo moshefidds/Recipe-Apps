@@ -62,13 +62,25 @@
             try
             {
                 DateTime now = DateTime.Now;
-                lbl.Text = now.ToString();
 
-                SqlCommand cmd = SqlUtility.GetSqlCommand("RecipeStatusUpdate");
-                SqlUtility.SetParamValue(cmd, "@DateDrafted", lblDateDrafted.Text);
-                SqlUtility.SetParamValue(cmd, "@DatePublished", lblDatePublished.Text);
-                SqlUtility.SetParamValue(cmd, "@DateArchived", lblDateArchived.Text);
                 DataRow r = dtrecipe.Rows[0];
+
+                switch (lbl.Name)
+                {
+                    case "lblDateArchived":
+                        r["DateArchived"] = now.ToString();
+                        break;
+                    case "lblDatePublished":
+                        r["DatePublished"] = now.ToString();
+                        r["DateArchived"] = DBNull.Value;
+                        break;
+                    case "lblDateDrafted":
+                        r["DateDrafted"] = now.ToString();
+                        r["DateArchived"] = DBNull.Value;
+                        r["DatePublished"] = DBNull.Value;
+                        break;
+                }
+
                 SqlUtility.SaveDataRow(r, "RecipeStatusUpdate");
                 dtrecipe = Recipe.LoadRecipe((int)this.Tag);
                 bindsource.DataSource = dtrecipe;

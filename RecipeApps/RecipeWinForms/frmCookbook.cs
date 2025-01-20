@@ -14,6 +14,7 @@
             btnSaveBook.Click += BtnSaveBook_Click;
             btnSave.Click += BtnSave_Click;
             gCookbookRecipe.CellContentClick += GCookbookRecipe_CellContentClick;
+            txtCookBookPrice.KeyPress += TxtCookBookPrice_KeyPress;
             this.FormClosing += FrmCookbook_FormClosing;
         }
 
@@ -37,11 +38,12 @@
             WindowsFormUtility.SetControlBinding(txtCookBookPrice, bindsource);
             WindowsFormUtility.SetControlBinding(lblDateRecorded, bindsource);
             WindowsFormUtility.SetControlBinding(ckbCookBookActive, bindsource);
-            
+
             SetControlsEnabledPerNewRecord();
 
             this.Text = GetCookbookDesc().ToString();
             this.Show();
+            ckbCookBookActive.CheckState = CheckState.Checked;
             LoadCookbookRecipe();
         }
 
@@ -81,7 +83,7 @@
                 this.Tag = cookbookid;
                 SetControlsEnabledPerNewRecord();
                 this.Text = GetCookbookDesc().ToString();
-                
+
             }
             catch (Exception ex)
             {
@@ -203,6 +205,16 @@
             SaveCookbookRecipe();
         }
 
+
+        // Cookbook Price - Only Numbers
+        private void TxtCookBookPrice_KeyPress(object? sender, KeyPressEventArgs e)
+        {
+            if (sender is TextBox tb)
+            {
+                string textboxname = tb.Name.Substring(3);
+                WindowsFormUtility.FormatTextBoxToInt(e, textboxname);
+            }
+        }
         private void FrmCookbook_FormClosing(object? sender, FormClosingEventArgs e)
         {
             bindsource.EndEdit();

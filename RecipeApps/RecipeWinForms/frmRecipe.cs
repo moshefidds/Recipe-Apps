@@ -16,6 +16,7 @@
             this.FormClosing += FrmRecipe_FormClosing;
             btnSaveIngredient.Click += BtnSaveIngredient_Click;
             btnStepsSave.Click += BtnStepsSave_Click;
+            txtNumOfCalories.KeyPress += TxtNumOfCalories_KeyPress;
             gIngredients.CellContentClick += GIngredients_CellContentClick;
             gSteps.CellContentClick += GSteps_CellContentClick;
         }
@@ -45,13 +46,15 @@
             WindowsFormUtility.SetControlBinding(lblDatePublished, bindsource);
             WindowsFormUtility.SetControlBinding(lblDateArchived, bindsource);
             WindowsFormUtility.SetControlBinding(lblRecipeStatus, bindsource);
-            SetControlsEnabledPerNewRecord();
+
             this.Text = GetRecipeDesc().ToString();
             this.Show();
+
             //this.Shown += FrmRecipe_Shown;
 
             LoadIngredients();
             LoadSteps();
+            SetControlsEnabledPerNewRecord();
         }
 
         // Load Ingredients
@@ -199,7 +202,7 @@
             }
             return b;
         }
-        
+
         // Delete
         private void Delete()
         {
@@ -244,6 +247,9 @@
             btnChangeStatus.Enabled = b;
             btnSaveIngredient.Enabled = b;
             btnStepsSave.Enabled = b;
+
+            gIngredients.Columns["Delete"].Visible = b;
+
         }
 
         // GetRecipeDesc
@@ -316,6 +322,16 @@
         private void BtnChangeStatus_Click(object? sender, EventArgs e)
         {
             ShowChangeStatusForm(typeof(frmChangeStatus), (int)this.Tag);
+        }
+
+        // Num of Calories - Only Numbers
+        private void TxtNumOfCalories_KeyPress(object? sender, KeyPressEventArgs e)
+        {
+            if (sender is TextBox tb)
+            {
+                string textboxname = tb.Name.Substring(3);
+                WindowsFormUtility.FormatTextBoxToInt(e, textboxname);
+            }
         }
 
         private void FrmRecipe_FormClosing(object? sender, FormClosingEventArgs e)

@@ -105,6 +105,7 @@
             gDashboard.AllowUserToResizeRows = false;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
             gDashboard.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            gDashboard.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             gDashboard.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             gDashboard.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             gDashboard.BackgroundColor = SystemColors.ButtonHighlight;
@@ -147,7 +148,7 @@
             gDashboard.ShowCellToolTips = false;
             gDashboard.ShowEditingIcon = false;
             gDashboard.ShowRowErrors = false;
-            gDashboard.Size = new Size(572, 267);
+            gDashboard.Size = new Size(590, 267);
             gDashboard.TabIndex = 10;
             gDashboard.TabStop = false;
             // 

@@ -17,11 +17,12 @@ namespace RecipeSystem
         }
 
         // Load Cookbook
-        public static DataTable Load(int cookbookid)
+        public static DataTable Load(int cookbookid, string cookbookname = "")
         {
             DataTable dt = new();
             SqlCommand cmd = SqlUtility.GetSqlCommand("CookbookGet");
             SqlUtility.SetParamValue(cmd, "@CookbookId", cookbookid);
+            SqlUtility.SetParamValue(cmd, "@CookBookName", cookbookname);
             dt = SqlUtility.GetDataTable(cmd);
             return dt;
         }
