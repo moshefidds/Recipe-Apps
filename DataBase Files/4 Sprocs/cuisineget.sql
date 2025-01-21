@@ -1,6 +1,10 @@
-use RecipeDB
-go
-create or alter procedure dbo.CuisineGet(@CuisineId int = 0, @CuisineType varchar(100) = '', @All bit = 0, @includeblank bit = 0)
+create or alter procedure dbo.CuisineGet(
+    @CuisineId int = 0, 
+    @CuisineType varchar(100) = '', 
+    @All bit = 0, 
+    @includeblank bit = 0,
+    @Message varchar(500) = '' output
+)
 as 
 begin
     select @CuisineType = nullif(@CuisineType, ''), @includeblank = isnull(@includeblank, 0)

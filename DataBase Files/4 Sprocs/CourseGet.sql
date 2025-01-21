@@ -1,11 +1,10 @@
-use RecipeDB
-go
 create or alter procedure dbo.CourseGet(
     @CourseId int = 0, 
     @CourseType varchar(100) = '', 
     @CourseSequence int = 0,
     @All bit = 0, 
-    @includeblank bit = 0
+    @includeblank bit = 0,
+    @Message varchar(500) = '' output
     )
 as 
 begin

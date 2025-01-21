@@ -1,6 +1,10 @@
-use RecipeDB
-go
-create or alter procedure dbo.MeasurementGet(@MeasurementId int = 0, @MeasurementType varchar(100) = '', @All bit = 0, @includeblank bit = 0)
+create or alter procedure dbo.MeasurementGet(
+    @MeasurementId int = 0, 
+    @MeasurementType varchar(100) = '', 
+    @All bit = 0, 
+    @includeblank bit = 0,
+    @Message varchar(500) = '' output
+)
 as 
 begin
     select @MeasurementType = nullif(@MeasurementType, ''), @includeblank = isnull(@includeblank, 0)

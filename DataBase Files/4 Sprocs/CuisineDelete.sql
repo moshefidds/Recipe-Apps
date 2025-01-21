@@ -1,5 +1,6 @@
 create or alter proc dbo.CuisineDelete(
-    @CuisineId int 
+    @CuisineId int,
+    @Message varchar(500) = '' output
 )
 as 
 begin

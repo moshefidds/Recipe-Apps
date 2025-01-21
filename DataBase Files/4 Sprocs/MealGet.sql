@@ -1,5 +1,3 @@
-use RecipeDB
-go
 create or alter proc dbo.MealGet(    
     @Meassage varchar(500) = '' output
 )

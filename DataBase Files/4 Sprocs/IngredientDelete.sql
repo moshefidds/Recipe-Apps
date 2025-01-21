@@ -1,5 +1,6 @@
 create or alter proc dbo.IngredientDelete(
-    @IngredientId int
+    @IngredientId int,
+    @Message varchar(500) = '' output
 )
 as 
 begin

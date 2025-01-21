@@ -1,5 +1,6 @@
 create or alter proc dbo.UserDelete(
-    @UserId int
+    @UserId int,
+    @Message varchar(500) = '' output
 )
 as 
 begin
@@ -30,10 +31,23 @@ begin
                 from MealCourseRecipe mcr
                 join Recipe r
                 on mcr.RecipeId = r.RecipeId
+                join MealCourse mc
+                on mcr.MealCourseId = mc.MealCourseId
+                join Meal m
+                on mc.MealId = m.MealId
                 join [User] u
                 on r.UserId = u.UserId
+                or m.UserId = u.UserId
                 where u.UserId = @UserId
-    
+
+                delete mc
+                from MealCourse mc
+                join Meal m
+                on mc.MealId = m.MealId
+                join [User] u
+                on m.UserId = u.UserId
+                where u.UserId = @UserId
+     
                 delete m
                 from Meal m
                 join [User] u

@@ -4,7 +4,8 @@ create or alter procedure dbo.RecipeGet(
     @RecipeId int = 0, 
     @RecipeName varchar(100) = '', 
     @All bit = 0, 
-    @includeblank bit = 0
+    @includeblank bit = 0,
+    @Message varchar(500) = '' output
 )
 as
 begin

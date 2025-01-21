@@ -1,6 +1,5 @@
 create or alter proc dbo.AutoCreateCookbook(
     @UserId int output,
-
     @Message varchar(500) = '' output
 )
 as begin 

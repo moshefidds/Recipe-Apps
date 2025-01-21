@@ -1,6 +1,7 @@
-use RecipeDB
-go
-create or alter procedure dbo.RecipeIngredientMeasurementGet(@RecipeId int = 0)
+create or alter procedure dbo.RecipeIngredientMeasurementGet(
+    @RecipeId int = 0,
+    @Message varchar(500) = '' output
+)
 as 
 begin
     select ri.RecipeIngredientId, r.RecipeId, r.RecipeName, i.IngredientId ,i.IngredientName, m.MeasurementType, m.MeasurementId, ri.MeasurementAmount, ri.IngredientSequence

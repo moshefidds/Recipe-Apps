@@ -1,5 +1,6 @@
 create or alter proc dbo.CourseDelete(
-    @CourseId int
+    @CourseId int,
+    @Message varchar(500) = '' output
 )
 as 
 begin

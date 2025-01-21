@@ -1,9 +1,9 @@
-use RecipeDB
-go
 create or alter procedure dbo.IngredientGet(
     @IngredientId int = 0, 
     @IngredientName varchar(100) = '', 
-    @All bit = 0, @includeblank bit = 0)
+    @All bit = 0, @includeblank bit = 0,
+    @Message varchar(500) = '' output
+)
 as 
 begin
     select @IngredientName = nullif(@IngredientName, ''), @includeblank = isnull(@includeblank, 0)

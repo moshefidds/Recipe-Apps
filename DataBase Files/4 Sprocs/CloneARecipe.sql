@@ -1,7 +1,8 @@
 Use RecipeDB
 go 
 create or alter proc dbo.CloneARecipe(
-    @RecipeId int
+    @RecipeId int,
+    @Message varchar(500) = '' output
 )
 as 
 begin
