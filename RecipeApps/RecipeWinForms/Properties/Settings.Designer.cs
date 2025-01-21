@@ -25,7 +25,7 @@ namespace RecipeWinForms.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("appadmin")]
         public string userid {
             get {
                 return ((string)(this["userid"]));
@@ -37,7 +37,7 @@ namespace RecipeWinForms.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("LogUP1234!")]
         public string password {
             get {
                 return ((string)(this["password"]));

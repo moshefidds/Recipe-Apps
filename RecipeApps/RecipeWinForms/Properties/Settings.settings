@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="userid" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">appadmin</Value>
     </Setting>
     <Setting Name="password" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">LogUP1234!</Value>
     </Setting>
   </Settings>
 </SettingsFile>
