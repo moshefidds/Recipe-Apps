@@ -1,5 +1,5 @@
 create or alter proc dbo.RecipeStepsUpdate(
-    @RecipeDirectionsId int output,
+    @RecipeDirectionsId int = 0 output,
     @RecipeId int output,
     @RecipeDirection varchar(100),
     @RecipeDirectionSequence int,
@@ -20,7 +20,9 @@ begin
                     order by rd.RecipeDirectionSequence desc
                 )
             insert RecipeDirections(RecipeId, RecipeDirection, RecipeDirectionSequence)
-            values(@RecipeId, @RecipeDirection, isnull(@NewRecipeDirectionSequence, 1))                
+            values(@RecipeId, @RecipeDirection, isnull(@NewRecipeDirectionSequence, 1))        
+
+            select @RecipeDirectionsId = SCOPE_IDENTITY()        
         end
 
     else
@@ -31,10 +33,8 @@ begin
                 RecipeDirectionSequence = @RecipeDirectionSequence
             where RecipeDirectionsId = @RecipeDirectionsId
         end
-
-    select @RecipeDirectionsId = SCOPE_IDENTITY()
-    
     return @return
 end
+go
 
 

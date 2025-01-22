@@ -1,5 +1,5 @@
 create or alter proc dbo.UserUpdate(
-    @UserId int output,
+    @UserId int = 0 output,
     @UserFirstName varchar(50),
     @UserLastName varchar(50),
     @UserName varchar(75),
@@ -15,6 +15,8 @@ begin
         begin
             insert [User](UserFirstName, UserLastName, UserName)
             values(@UserFirstName, @UserLastName, @UserName)
+
+            select @UserId = SCOPE_IDENTITY()
         end
     else 
         begin
@@ -23,7 +25,8 @@ begin
             UserFirstName = @UserFirstName,
             UserLastName = @UserLastName,
             UserName = @UserName
-        where UserId = @UserId
-    end
-    select @UserId = SCOPE_IDENTITY()
+            where UserId = @UserId
+        end
+    return @return
 end
+go

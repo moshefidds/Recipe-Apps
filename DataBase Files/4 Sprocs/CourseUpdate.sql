@@ -1,5 +1,5 @@
 create or alter proc dbo.CourseUpdate(
-    @CourseId int output,
+    @CourseId int = 0 output,
     @CourseType varchar(50),
     @CourseSequence int,
     @Message varchar(500) = ''
@@ -14,6 +14,8 @@ begin
         begin
             insert Course(CourseType, CourseSequence)
             values(@CourseType, @CourseSequence)
+
+            select @CourseId = SCOPE_IDENTITY()
         end
     else 
         begin
@@ -23,5 +25,6 @@ begin
             CourseSequence = @CourseSequence
         where CourseId = @CourseId
     end
-    select @CourseId = SCOPE_IDENTITY()
+    return @return
 end
+go

@@ -1,5 +1,5 @@
 create or alter proc dbo.CookbookRecipeUpdate(
-    @CookBookRecipeId int output,
+    @CookBookRecipeId int = 0 output,
     @CookBookId int output,
     @RecipeId int output,
     @CookBookRecipeSequence int output,
@@ -20,7 +20,9 @@ begin
                     order by cbr.CookBookRecipeSequence desc
                 )
             insert CookBookRecipe(CookBookId, RecipeId, CookBookRecipeSequence)
-            values(@CookBookId, @RecipeId, isnull(@NewCookBookRecipeSequence, 1))                
+            values(@CookBookId, @RecipeId, isnull(@NewCookBookRecipeSequence, 1))   
+
+            select @CookBookRecipeId = SCOPE_IDENTITY()             
         end
 
     else
@@ -32,9 +34,7 @@ begin
                 CookBookRecipeSequence = @CookBookRecipeSequence
             where CookBookRecipeId = @CookBookRecipeId
         end
-
-    select @CookBookRecipeId = SCOPE_IDENTITY()
     
     return @return
 end
-
+go

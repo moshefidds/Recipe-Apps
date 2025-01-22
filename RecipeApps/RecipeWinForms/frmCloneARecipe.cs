@@ -7,7 +7,7 @@
         {
             InitializeComponent();
             btnClone.Click += BtnClone_Click;
-            lstRecipe.Click += LstRecipe_Click;
+            lstRecipe.TextChanged += LstRecipe_TextChanged;
             LoadForm();
         }
 
@@ -46,7 +46,7 @@
         // OpenNewRecipe
         private void OpenNewRecipe(string newrecipe)
         {
-            DataTable dt = Recipe.SearchRecipes(newrecipe);
+            DataTable dt = Recipe.GetRecipeList(false, 0, newrecipe);
             int newrecipeid = (int)dt.Rows[0]["RecipeId"];
             if (this.MdiParent != null && this.MdiParent is frmMain)
             {
@@ -61,7 +61,7 @@
             CloneARecipe();
         }
 
-        private void LstRecipe_Click(object? sender, EventArgs e)
+        private void LstRecipe_TextChanged(object? sender, EventArgs e)
         {
             recipename = lstRecipe.Text;
         }

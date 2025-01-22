@@ -25,12 +25,13 @@ namespace RecipeSystem
         }
 
         // Get Recipe List
-        public static DataTable GetRecipeList(bool includeblank = false)
+        public static DataTable GetRecipeList(bool includeblank = false, int all = 1, string recipename = "")
         {
             DataTable dt = new();
             SqlCommand cmd = SqlUtility.GetSqlCommand("RecipeGet");
-            SqlUtility.SetParamValue(cmd, "@All", 1);
+            SqlUtility.SetParamValue(cmd, "@All", all);
             SqlUtility.SetParamValue(cmd, "@IncludeBlank", includeblank);
+            SqlUtility.SetParamValue(cmd, "@RecipeName", recipename);
             dt = SqlUtility.GetDataTable(cmd);
             return dt;
         }

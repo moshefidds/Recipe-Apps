@@ -1,5 +1,5 @@
 create or alter proc dbo.CuisineUpdate(
-    @CuisineId int output,
+    @CuisineId int = 0 output,
     @CuisineType varchar(75),
     @Message varchar(500) = ''
 )
@@ -13,6 +13,8 @@ begin
         begin
             insert Cuisine(CuisineType)
             values(@CuisineType)
+
+            select @CuisineId = SCOPE_IDENTITY()
         end
     else 
         begin
@@ -21,5 +23,6 @@ begin
             CuisineType = @CuisineType
         where CuisineId = @CuisineId
     end
-    select @CuisineId = SCOPE_IDENTITY()
+    return @return
 end
+go

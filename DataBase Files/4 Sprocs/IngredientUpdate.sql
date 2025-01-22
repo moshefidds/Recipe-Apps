@@ -1,5 +1,5 @@
 create or alter proc dbo.IngredientUpdate(
-    @IngredientId int output,
+    @IngredientId int = 0 output,
     @IngredientName varchar(75),
     @Message varchar(500) = ''
 )
@@ -13,6 +13,8 @@ begin
         begin
             insert Ingredient(IngredientName)
             values(@IngredientName)
+
+            select @IngredientId = SCOPE_IDENTITY()
         end
     else 
         begin
@@ -21,5 +23,6 @@ begin
             IngredientName = @IngredientName
         where IngredientId = @IngredientId
     end
-    select @IngredientId = SCOPE_IDENTITY()
+    return @return
 end
+go

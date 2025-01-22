@@ -52,7 +52,7 @@ namespace RecipeSystem
         public static void CloneARecipe(int recipeid)
         {
             SqlCommand cmd = SqlUtility.GetSqlCommand("CloneARecipe");
-            SqlUtility.SetParamValue(cmd, "@RecipeId", recipeid);
+            SqlUtility.SetParamValue(cmd, "@SourceRecipeId", recipeid);
             SqlUtility.ExecuteSQL(cmd);
         }
 

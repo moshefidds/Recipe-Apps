@@ -1,5 +1,5 @@
 create or alter proc dbo.RecipeIngredientUpdate(
-    @RecipeIngredientId int output,
+    @RecipeIngredientId int = 0 output,
     @RecipeId int output,
     @IngredientId int output,
     @MeasurementId int output,
@@ -22,7 +22,9 @@ begin
                     order by ri.IngredientSequence desc
                 )
             insert RecipeIngredient(RecipeId, IngredientId, MeasurementId, MeasurementAmount, IngredientSequence)
-            values(@RecipeId, @IngredientId, @MeasurementId, @MeasurementAmount, isnull(@NewIngredientSequence, 1))                
+            values(@RecipeId, @IngredientId, @MeasurementId, @MeasurementAmount, isnull(@NewIngredientSequence, 1))  
+
+            select @RecipeIngredientId = SCOPE_IDENTITY()              
         end
 
     else
@@ -35,8 +37,6 @@ begin
                 IngredientSequence = @IngredientSequence
             where RecipeIngredientId = @RecipeIngredientId
         end
-
-    select @RecipeIngredientId = SCOPE_IDENTITY()
-    
     return @return
 end
+go

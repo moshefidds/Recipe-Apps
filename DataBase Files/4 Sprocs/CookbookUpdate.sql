@@ -1,5 +1,5 @@
 create or alter proc dbo.CookbookUpdate(
-    @CookBookId int output,
+    @CookBookId int = 0 output,
     @UserId int output,
     @CookBookName varchar (100) output,
     @CookBookPrice decimal(5,2) output,

@@ -1,5 +1,5 @@
 create or alter proc MeasurementUpdate(
-    @MeasurementId int output,
+    @MeasurementId int = 0 output,
     @MeasurementType varchar(50),
     @Message varchar(500) = ''
 )
@@ -13,6 +13,8 @@ begin
         begin
             insert Measurement(MeasurementType)
             values(@MeasurementType)
+
+            select @MeasurementId = SCOPE_IDENTITY()
         end
     else 
         begin
@@ -21,5 +23,6 @@ begin
             MeasurementType = @MeasurementType
         where MeasurementId = @MeasurementId 
     end
-    select @MeasurementId = SCOPE_IDENTITY()
+    return @return
 end
+go
