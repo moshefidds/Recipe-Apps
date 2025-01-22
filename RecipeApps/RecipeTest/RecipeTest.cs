@@ -8,8 +8,8 @@ namespace RecipeTest
     public class ResipeTest
     {
         string openliveconnstring = ConfigurationManager.ConnectionStrings["liveconn"].ConnectionString;
-        //string connstring = ConfigurationManager.ConnectionStrings["devconn"].ConnectionString;
-        //string testconnstring = ConfigurationManager.ConnectionStrings["unittestconn"].ConnectionString;
+        string connstring = ConfigurationManager.ConnectionStrings["devconn"].ConnectionString;
+        string testconnstring = ConfigurationManager.ConnectionStrings["unittestconn"].ConnectionString;
 
         bool homework = true;
 
@@ -31,11 +31,11 @@ namespace RecipeTest
                 activeconnectionstring = openliveconnstring;
                 activeunitteststring = openliveconnstring;
             }
-            //else
-            //{
-            //    activeconnectionstring = connstring;
-            //    activeunitteststring = testconnstring;
-            //}
+            else
+            {
+                activeconnectionstring = connstring;
+                activeunitteststring = testconnstring;
+            }
         }
 
         // Internal GetDataTable
