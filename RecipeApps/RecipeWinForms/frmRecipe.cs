@@ -77,7 +77,16 @@
 
             WindowsFormUtility.AddDeleteButtonToGrid(gIngredients, "Delete");
 
+            //foreach (DataGridViewButtonCell btn in gIngredients.Columns)
+            //{
+            //    if (btn.RowIndex == gIngredients.Rows.Count)
+            //    {
+                    
+            //    }
+            //}
+
             FormatIngredientsGrid();
+
         }
 
         // Load Steps
@@ -124,6 +133,11 @@
         // DeleteRecipeSteps
         private void DeleteRecipeSteps(int rowIndex)
         {
+            if (rowIndex == dtsteps.Rows.Count)
+            {
+                return;
+            }
+
             var response = MessageBox.Show("You're sure you want to Delete this Step?", "Recipe - Steps", MessageBoxButtons.YesNo);
             if (response == DialogResult.No)
             {
@@ -152,6 +166,11 @@
         // DeleteRecipeIngredient
         private void DeleteRecipeIngredient(int rowIndex)
         {
+            if (rowIndex == dtingredient.Rows.Count)
+            {
+                return;
+            }
+
             var response = MessageBox.Show("You're sure you want to Delete this Ingredient?", "Recipe - Ingredient", MessageBoxButtons.YesNo);
             if (response == DialogResult.No)
             {

@@ -137,6 +137,11 @@
         // DeleteCookbookRecipe
         private void DeleteCookbookRecipe(int rowIndex)
         {
+            if (rowIndex == dtcookbookrecipe.Rows.Count)
+            {
+                return;
+            }
+
             var response = MessageBox.Show("You're sure you want to Delete this Recipe?", "Cookbook Recipe", MessageBoxButtons.YesNo);
             if (response == DialogResult.No)
             {

@@ -9,7 +9,7 @@ as
 begin
     declare @return int = 0
 
-    select @RecipeId = isnull(@RecipeId, 0), @DateArchived = nullif(@DateArchived, ''), @DatePublished = nullif(@DatePublished, '')
+    select @RecipeId = isnull(@RecipeId, 0)--, @DateArchived = nullif(@DateArchived, ''), @DatePublished = nullif(@DatePublished, '')
 
     if @RecipeId != 0
     begin

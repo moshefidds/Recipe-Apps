@@ -64,7 +64,7 @@
                 DateTime now = DateTime.Now;
 
                 DataRow r = dtrecipe.Rows[0];
-
+                    
                 switch (lbl.Name)
                 {
                     case "lblDateArchived":

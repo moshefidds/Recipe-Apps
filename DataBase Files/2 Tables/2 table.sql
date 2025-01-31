@@ -60,6 +60,8 @@ create table dbo.Recipe(
     constraint ck_Recipe_DateDrafted_cannot_be_after_DatePublished_or_DateArchived_or_the_current_date check(DateDrafted <= isnull(DatePublished, getdate()) and DateDrafted <= isnull(DateArchived, getdate())),
     constraint ck_Recipe_DatePublished_cannot_be_after_DateArchived_or_the_current_date check(DatePublished <= isnull(DateArchived, getdate())),
 
+    --constraint ck_Recipe_DateDrafted_cannot_be_after_DatePublished_or_DateArchived check(DateDrafted <= DatePublished and DateDrafted <= DateArchived),
+    --constraint ck_Recipe_DatePublished_cannot_be_after_DateArchived check(DatePublished <= DateArchived),
 )
 go
 
